@@ -1,0 +1,3 @@
+pyinstaller main.py --noconsole --onefile --icon=PurlsIcon.ico --name "SWLU Updater"
+
+auto-py-to-exe
