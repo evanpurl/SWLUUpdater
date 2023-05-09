@@ -95,6 +95,7 @@ class Ui_Dialog(object):
             else:
                 self.downloadbutton.setEnabled(False)
                 self.pushButton.setEnabled(False)
+                self.unzipbutton.setEnabled(False)
                 opener = urllib.request.build_opener()
                 opener.addheaders = [('User-agent', 'SWLU Updater')]
                 urllib.request.install_opener(opener)
@@ -104,6 +105,7 @@ class Ui_Dialog(object):
                 self.label2.setText("Done! :)")
                 self.downloadbutton.setEnabled(True)
                 self.pushButton.setEnabled(True)
+                self.unzipbutton.setEnabled(True)
         except urllib.request.HTTPError as e:
             print(e)
 
@@ -115,6 +117,9 @@ class Ui_Dialog(object):
             error.setIcon(QMessageBox.Critical)
             retval = error.exec_()
         else:
+            self.downloadbutton.setEnabled(False)
+            self.pushButton.setEnabled(False)
+            self.unzipbutton.setEnabled(False)
             zip_ref = zipfile.ZipFile(self.label.text() + "/SWLULatest.zip", 'r')
             for a, b in enumerate(zip_ref.namelist()):
                 self.label2.setText(f"Extracting {b}")
@@ -125,6 +130,9 @@ class Ui_Dialog(object):
             zip_ref.close()
             os.remove(self.label.text() + "/SWLULatest.zip")
             self.label2.setText("Done! :)")
+            self.downloadbutton.setEnabled(True)
+            self.pushButton.setEnabled(True)
+            self.unzipbutton.setEnabled(True)
 
 
 if __name__ == "__main__":
