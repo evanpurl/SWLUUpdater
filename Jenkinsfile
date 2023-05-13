@@ -39,7 +39,7 @@ pipeline {
             steps {
                 dir(path: env.BUILD_ID) { 
                     unstash(name: 'compiled-results') 
-                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F main.py --noconsole --onefile --icon=PurlsIcon.ico --name "SWLU Updater"'" 
+                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F main.py --noconsole --onefile --icon=PurlsIcon.ico --name "SWLUUpdater"'"
                 }
             }
             post {
