@@ -42,6 +42,10 @@ class Ui_Dialog(object):
         self.label2.setGeometry(QtCore.QRect(90, 100, 301, 21))
         self.label2.setText("")
         self.label2.setObjectName("label2")
+        self.label3 = QtWidgets.QLabel(Dialog)
+        self.label3.setGeometry(QtCore.QRect(15, 25, 355, 21))
+        self.label3.setText("Please select an empty folder, or an existing SWLU Installer Directory.")
+        self.label3.setObjectName("label3")
 
 
         self.downloadbutton.clicked.connect(self.Download)
