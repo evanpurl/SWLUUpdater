@@ -19,7 +19,7 @@ class Ui_Dialog(object):
         Dialog.setWindowFlags(Dialog.windowFlags() & ~Qt.WindowType.WindowContextHelpButtonHint)
         self.versionlabel = QtWidgets.QLabel(Dialog)
         self.versionlabel.setGeometry(QtCore.QRect(10, 280, 191, 21))
-        self.versionlabel.setText(f"Latest Version: {getlatestversion()}")
+        self.versionlabel.setText("Latest Version: {}".format(getlatestversion()))
         self.versionlabel.setObjectName("versionlabel")
         self.downloadbar = QtWidgets.QProgressBar(Dialog)
         self.downloadbar.setGeometry(QtCore.QRect(10, 240, 311, 23))
@@ -96,7 +96,7 @@ class Ui_Dialog(object):
                 opener.close()
                 zip_ref = zipfile.ZipFile(self.label.text() + "/SWLULatest.zip", 'r')
                 for a, b in enumerate(zip_ref.namelist()):
-                    self.label2.setText(f"Extracting {b}")
+                    self.label2.setText("Extracting {}".format(b))
                     download_percentage = (((a + 1) * 100) / len(zip_ref.namelist()))
                     self.downloadbar.setValue(int(download_percentage))
                     self.downloadbar.setFormat("%.02f %%" % download_percentage)
@@ -109,31 +109,6 @@ class Ui_Dialog(object):
                 # self.unzipbutton.setEnabled(True)
         except urllib.request.HTTPError as e:
             print(e)
-
-    # def unzip(self):
-    #     if not os.path.exists(self.label.text() + "/SWLULatest.zip"):
-    #         error = QMessageBox()
-    #         error.setWindowTitle("File does not exist")
-    #         error.setText("You must Download the build first :)")
-    #         error.setIcon(QMessageBox.Critical)
-    #         retval = error.exec_()
-    #     else:
-    #         self.downloadbutton.setEnabled(False)
-    #         self.pushButton.setEnabled(False)
-    #         self.unzipbutton.setEnabled(False)
-    #         zip_ref = zipfile.ZipFile(self.label.text() + "/SWLULatest.zip", 'r')
-    #         for a, b in enumerate(zip_ref.namelist()):
-    #             self.label2.setText(f"Extracting {b}")
-    #             download_percentage = (((a + 1) * 100) / len(zip_ref.namelist()))
-    #             self.downloadbar.setValue(int(download_percentage))
-    #             self.downloadbar.setFormat("%.02f %%" % download_percentage)
-    #             zip_ref.extract(path=self.label.text(), member=b)
-    #         zip_ref.close()
-    #         os.remove(self.label.text() + "/SWLULatest.zip")
-    #         self.label2.setText("Done! :)")
-    #         self.downloadbutton.setEnabled(True)
-    #         self.pushButton.setEnabled(True)
-    #         self.unzipbutton.setEnabled(True)
 
 
 if __name__ == "__main__":
