@@ -4,20 +4,47 @@ pipeline {
         skipStagesAfterUnstable()
     }
     stages {
-        stage('Deliver') { 
+        stage('Build') {
+            agent {
+                docker {
+                    image 'python:3-alpine'
+                }
+            }
+            steps {
+                sh 'python -m py_compile sources/main.py sources/backend/getversion.py'
+                stash(name: 'compiled-results', includes: 'sources/*.py*')
+            }
+        }
+        stage('Test') {
+            agent {
+                docker {
+                    image 'qnib/pytest'
+                }
+            }
+            steps {
+                sh 'py.test --junit-xml test-reports/results.xml sources/main.py'
+            }
+            post {
+                always {
+                    junit 'test-reports/results.xml'
+                }
+            }
+        }
+        stage('Deliver') {
             agent any
-            environment { 
+            environment {
                 VOLUME = '$(pwd)/sources:/src'
                 IMAGE = 'cdrx/pyinstaller-windows:python3'
             }
             steps {
                 dir(path: env.BUILD_ID) {
-                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F sources/main.py --noconsole --onefile --icon=purlsicon.ico --name SWLU-Updater'"
+                    unstash(name: 'compiled-results')
+                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F main.py'"
                 }
             }
             post {
                 success {
-                    archiveArtifacts "${env.BUILD_ID}/sources/dist/SWLU-Updater.exe"
+                    archiveArtifacts "${env.BUILD_ID}/sources/dist/main.exe"
                     sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
                 }
             }
