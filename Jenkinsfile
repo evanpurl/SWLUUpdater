@@ -12,12 +12,12 @@ pipeline {
             }
             steps {
                 dir(path: env.BUILD_ID) {
-                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller main.py --noconsole --onefile --icon=PurlsIcon.ico --name SWLUUpdater'" 
+                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller main.py --noconsole --onefile --icon=purlsicon.ico --name swluupdater'"
                 }
             }
             post {
                 success {
-                    archiveArtifacts "${env.BUILD_ID}/sources/dist/SWLUUpdater.exe" 
+                    archiveArtifacts "${env.BUILD_ID}/sources/dist/swluupdater.exe"
                     sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
                 }
             }
