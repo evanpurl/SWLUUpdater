@@ -11,8 +11,8 @@ pipeline {
                 }
             }
             steps {
-                sh 'python -m py_compile sources/main.py'
-                stash(name: 'compiled-results', includes: 'sources/*.py*')
+                sh 'python -m py_compile main.py'
+                stash(name: 'compiled-results', includes: '*.py*')
             }
         }
         stage('Test') {
@@ -22,7 +22,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'py.test --junit-xml test-reports/results.xml sources/main.py'
+                sh 'py.test --junit-xml test-reports/results.xml main.py'
             }
             post {
                 always {
@@ -33,7 +33,7 @@ pipeline {
         stage('Deliver') { 
             agent any
             environment { 
-                VOLUME = '$(pwd)/sources:/src'
+                VOLUME = '$(pwd)/src'
                 IMAGE = 'cdrx/pyinstaller-windows:python3'
             }
             steps {
@@ -44,7 +44,7 @@ pipeline {
             }
             post {
                 success {
-                    archiveArtifacts "${env.BUILD_ID}/sources/dist/SWLUUpdater.exe" 
+                    archiveArtifacts "${env.BUILD_ID}/dist/SWLUUpdater.exe"
                     sh "docker run --rm -v ${VOLUME} ${IMAGE} 'rm -rf build dist'"
                 }
             }
