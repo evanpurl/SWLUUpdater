@@ -11,7 +11,7 @@ pipeline {
                 }
             }
             steps {
-                sh 'python -m py_compile main.py getversion.py'
+                sh 'python -m py_compile main.py backend/getversion.py'
                 stash(name: 'compiled-results', includes: '*.py*')
             }
         }
