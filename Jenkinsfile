@@ -12,7 +12,7 @@ pipeline {
             }
             steps {
                 dir(path: env.BUILD_ID) {
-                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller main.py --noconsole --onefile --icon=purlsicon.ico --name SWLU-Updater'"
+                    sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F sources/main.py --noconsole --onefile --icon=purlsicon.ico --name SWLU-Updater'"
                 }
             }
             post {
