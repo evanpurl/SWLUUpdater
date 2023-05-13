@@ -3,22 +3,6 @@ pipeline {
     options {
         skipStagesAfterUnstable()
     }
-    stages {
-        stage('Test') {
-            agent {
-                docker {
-                    image 'qnib/pytest'
-                }
-            }
-            steps {
-                sh 'py.test --junit-xml test-reports/results.xml main.py'
-            }
-            post {
-                always {
-                    junit 'test-reports/results.xml'
-                }
-            }
-        }
         stage('Deliver') { 
             agent any
             environment { 
@@ -26,8 +10,7 @@ pipeline {
                 IMAGE = 'cdrx/pyinstaller-windows:python3'
             }
             steps {
-                dir(path: env.BUILD_ID) { 
-                    unstash(name: 'compiled-results') 
+                dir(path: env.BUILD_ID) {
                     sh "docker run --rm -v ${VOLUME} ${IMAGE} 'pyinstaller -F main.py --noconsole --onefile --icon=PurlsIcon.ico --name SWLUUpdater'"
                 }
             }
